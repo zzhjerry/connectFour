@@ -7,12 +7,17 @@
   "author": "zzh699 <zzh699@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "browserify": "^13.1.1",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
     "gulp-typescript": "^3.1.3",
     "jasmine": "^2.5.2",
     "run-sequence": "^1.2.2",
-    "typescript": "^2.0.10"
+    "tsify": "^2.0.3",
+    "typescript": "^2.0.10",
+    "vinyl-source-stream": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "long": "^3.2.0"
+  }
 }
