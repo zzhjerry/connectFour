@@ -35,6 +35,7 @@ var watchedBrowserify = watchify(browserify({
 function bundle () {
     return watchedBrowserify
         .bundle()
+        .on('error', function (error) { console.error(error.toString()); })
         .pipe(source('application.js'))
         .pipe(gulp.dest(targetDir.root))
         .pipe(connect.reload());

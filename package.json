@@ -19,6 +19,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "@types/long": "^3.0.31",
     "long": "^3.2.0"
   }
 }
