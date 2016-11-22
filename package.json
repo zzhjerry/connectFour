@@ -15,7 +15,8 @@
     "run-sequence": "^1.2.2",
     "tsify": "^2.0.3",
     "typescript": "^2.0.10",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
   },
   "dependencies": {
     "long": "^3.2.0"
