@@ -1,5 +1,6 @@
 import sayHello = require("./greet");
 import Connect4 = require("./connect4");
+import Game = require("./game")
 
 function showHello(divName: string, name: string) {
     const elt = document.getElementById(divName);
@@ -7,4 +8,6 @@ function showHello(divName: string, name: string) {
     elt.innerText = connect4.test();
 }
 
-showHello('app', 'TypeScript');
+window.onload = () => {
+    var game = new Game();
+};
