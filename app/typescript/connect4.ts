@@ -1,4 +1,3 @@
-/// <reference path="long.d.ts" />
 import Long = require("long");
 
 /* References:
@@ -40,8 +39,8 @@ class Connect4 {
     }
 
     positionCode () {
-        return color[0].shl(1)
-            .add(color[1])
+        return this.color[0].shl(1)
+            .add(this.color[1])
             .add(this.BOTTOM);
     }
 
@@ -50,11 +49,11 @@ class Connect4 {
     }
 
     isPlayable (col: number): boolean {
-        return this.isLegal(color[this.npiles & 1]
+        return this.isLegal(this.color[this.npiles & 1]
                             .or(Long.UONE.shl(this.height[col])))
     }
 
-    hasWon (readonly newboard: Long): boolean {
+    hasWon (newboard: Long): boolean {
         let y: Long = newboard.and(newboard.shr(this.HEIGHT));
         if (y.and(y.shr(2 * this.HEIGHT)).neq(Long.UZERO)) {
             return true;  // check diagnal \
