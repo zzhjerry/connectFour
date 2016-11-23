@@ -10,12 +10,14 @@ var watchify = require("watchify");
 
 var src = {
     html: 'app/*.html',
-    entries: ['app/typescript/main.ts'],
-    scripts: './app/typescript/**/*.ts'
+    assest: 'app/assest/**',
+    scripts: './app/typescript/**/*.ts',
+    entries: ['app/typescript/main.ts']
 };
 
 var targetDir = {
     js: 'dist/js',
+    assest: 'dist/assest',
     root: 'dist'
 };
 
@@ -55,11 +57,18 @@ gulp.task('html', function () {
         .pipe(connect.reload());
 });
 
+gulp.task('assest', function () {
+    return gulp.src(src.assest)
+        .pipe(gulp.dest(targetDir.assest))
+        .pipe(connect.reload());
+});
+
 gulp.task('build', function () {
-    runSequence('bundle', 'html');
+    runSequence('bundle', 'assest', 'html');
 });
 
 gulp.task('watch', function () {
+    gulp.watch(src.assest, ['assest']);
     gulp.watch(src.html, ['html']);
 });
 watchedBrowserify.on('update', bundle);
