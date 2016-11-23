@@ -10,7 +10,7 @@ var watchify = require("watchify");
 
 var src = {
     html: 'app/*.html',
-    assest: 'app/assest/**',
+    assest: 'app/assest/**/*',
     scripts: './app/typescript/**/*.ts',
     entries: ['app/typescript/main.ts']
 };
@@ -31,7 +31,7 @@ gulp.task('connect', function() {
 var watchedBrowserify = watchify(browserify({
     basedir: '.',
     debug: true,
-    entries: src.entries,
+    entries: src.entries
 })).plugin(tsify);
 
 function bundle () {
