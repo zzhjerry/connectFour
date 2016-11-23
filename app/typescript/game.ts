@@ -2,7 +2,80 @@ import Connect4 = require("./connect4");
 
 class Game {
 
-    start (): void {
+    canvas: HTMLCanvasElement;
+    c: CanvasRenderingContext2D;
+    connect4: Connect4;
+
+    readonly span: number = 50;
+    readonly boardAreaMarginLeft: number;
+    readonly boardAreaMarginTop: number;
+
+    constructor() {
+        this.connect4 = new Connect4();
+        this.boardAreaMarginLeft = 30;
+        this.boardAreaMarginTop = 30;
+    }
+
+    start(): void {
+        this.test();
+
+        this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
+        this.c = this.canvas.getContext('2d');
+        // this.drawBackground();
+        this.loop();
+    }
+
+    drawBackground(): void {
+        let numHorizentalLines = this.connect4.HEIGHT + 1;
+        let numVerticalLines = this.connect4.WIDTH + 1;
+        let lengthHorizentalLine = this.connect4.WIDTH * this.span;
+        let lengthVerticalLine = this.connect4.HEIGHT * this.span;
+
+        let offsetX = this.boardAreaMarginLeft;
+        let offsetY = this.boardAreaMarginTop;
+
+        for (let i = 0; i < numHorizentalLines; i++) {
+            this.c.beginPath();
+            let y = offsetY + (this.span * i);
+            let x1 = offsetX;
+            let x2 = offsetX + lengthHorizentalLine;
+            this.c.moveTo(x1, y);
+            this.c.lineTo(x2, y);
+            this.c.stroke();
+        }
+        for (let j = 0; j < numVerticalLines; j++) {
+            this.c.beginPath();
+            let x = offsetX + (this.span * j);
+            let y1 = offsetY;
+            let y2 = offsetY + lengthVerticalLine;
+            this.c.moveTo(x, y1);
+            this.c.lineTo(x, y2);
+            this.c.stroke();
+        }
+    }
+
+    dropBall(col: number): void {
+
+    }
+
+    loop() {
+        let [x, y] = [10, 10];
+        let [dx, dy] = [2, 2];
+        let draw = () => {
+            this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.c.beginPath();
+            this.c.arc(x, y, 10, 0, Math.PI * 2);
+            this.c.fillStyle = "#0095DD";
+            this.c.fill();
+            this.c.closePath();
+            x += dx;
+            y += dy;
+            requestAnimationFrame(draw);
+        }
+        // draw();
+    }
+
+    test(): void {
         const elt = document.getElementById('app');
         let connect4 = new Connect4();
         elt.innerText = connect4.test().toString();
