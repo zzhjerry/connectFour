@@ -37,3 +37,5 @@ yarn run serve
 ### 3. Start playing
 
 open [http://localhost:8080/](http://localhost:8080/)
+
+**Have fun!**
