@@ -2,7 +2,7 @@
 
 Built with typescript and webpack.
 
-![Screenshot](./screenshot.png | width=250)
+![Screenshot](./screenshot.png)
 
 ## Installation
 
