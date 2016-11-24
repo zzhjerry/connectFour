@@ -14,9 +14,13 @@ class Game {
     readonly span: number = 50;
     readonly boardAreaMarginLeft: number;
     readonly boardAreaMarginTop: number;
+    readonly boardHeight: number;
+    readonly boardWidth: number
 
     constructor() {
         this.connect4 = new Connect4();
+        this.boardHeight = this.span * this.connect4.HEIGHT;
+        this.boardWidth = this.span * this.connect4.WIDTH;
         this.boardAreaMarginLeft = 30;
         this.boardAreaMarginTop = 30;
         this.columnHeight = [];
@@ -36,16 +40,10 @@ class Game {
     }
 
     initEventsListeners = (): void => {
+        let connect4 = this.connect4;
         this.canvas.addEventListener('click', (e) => {
-            let col = (e.offsetX - this.boardAreaMarginLeft) / this.span;
-            col = Math.floor(col);
-            let row = (e.offsetY - this.boardAreaMarginTop) / this.span;
-            row = Math.floor(row);
-            let isMouseClickInsideBoard: boolean = (
-                col >= 0 && col < this.connect4.WIDTH
-                && row >= 0 && row < this.connect4.HEIGHT);
-
-            if (isMouseClickInsideBoard && this.connect4.isPlayable(col)
+            let [row, col, isMouseInsideBoard] = this.getMousePosition(e);
+            if (isMouseInsideBoard && this.connect4.isPlayable(col)
                 && !this.gameOver) {
 
                 this.drawDropingBall(col);
@@ -53,9 +51,35 @@ class Game {
             }
         });
         this.canvas.addEventListener('mousemove', (e) => {
-            let columnHighlightingColor = players[this.connect4.getCurrentPlayerId()].columnHighlightingColor;
-
+            let columnHighlightingColor = players[
+                connect4.getCurrentPlayerId()].columnHighlightingColor;
+            let [, col, isMouseInsideBoard] = this.getMousePosition(e);
+            if (isMouseInsideBoard) {
+                this.drawLastFinalState();
+                this.c.beginPath();
+                this.c.rect(
+                    this.boardAreaMarginLeft + col * this.span,
+                    this.boardAreaMarginTop, this.span, this.boardHeight
+                );
+                this.c.fillStyle = columnHighlightingColor;
+                this.c.fill();
+                this.c.closePath()
+            }
+            else {
+                this.drawLastFinalState();
+            }
         });
+    }
+
+    getMousePosition = (e): [number, number, boolean] => {
+        let col = (e.offsetX - this.boardAreaMarginLeft) / this.span;
+        col = Math.floor(col);
+        let row = (e.offsetY - this.boardAreaMarginTop) / this.span;
+        row = Math.floor(row);
+        let isMouseInsideBoard: boolean = (
+            col >= 0 && col < this.connect4.WIDTH
+            && row >= 0 && row < this.connect4.HEIGHT);
+        return [row, col, isMouseInsideBoard];
     }
 
     drawBackground(): void {
@@ -87,6 +111,12 @@ class Game {
         }
     }
 
+    drawLastFinalState = (): void => {
+        this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawBackground();
+        this.drawExistingBalls();
+    }
+
     drawDropingBall = (col: number): void => {
         let dy: number = 10;
         let halfSpan: number = this.span / 2;
@@ -96,9 +126,7 @@ class Game {
         let distance = this.boardAreaMarginTop + this.columnHeight[col] * this.span - halfSpan;
         let player = players[this.connect4.getCurrentPlayerId()];
         let animate = () => {
-            this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.drawBackground();
-            this.drawExistingBalls();
+            this.drawLastFinalState();
             this.drawNewBall(player, x, y + dy / 2, radius);
             y += dy;
             if (y < distance)
@@ -106,9 +134,7 @@ class Game {
             else {
                 this.ballsInColumn[col].push(
                     new Ball(player, x, distance, radius));
-                this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.drawBackground();
-                this.drawExistingBalls();
+                this.drawLastFinalState();
                 if (this.connect4.isLegalHasWon(this.connect4.getBoard(player))) {
                     this.gameOver = true;
                     this.message('message', `${player.name} wins`);
