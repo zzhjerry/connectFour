@@ -19,6 +19,7 @@ class Ball {
     y: number;
     radius: number;
     color: string;
+
     readonly pi: number = Math.PI;
 
     constructor(player: Player, x: number, y: number, radius: number) {
