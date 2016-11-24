@@ -1,4 +1,4 @@
-import Connect4 = require("./connect4");
+import { Connect4 } from "./connect4";
 import { Ball, Player } from "./elements";
 import { players } from "./elements";
 

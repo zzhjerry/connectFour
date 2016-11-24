@@ -90,4 +90,4 @@ class Connect4 {
     }
 }
 
-export = Connect4;
+export { Connect4 };
