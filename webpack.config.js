@@ -18,7 +18,6 @@ module.exports = {
         })
     ],
 
-    // TODO: what does this mean?
     resolve: {
         extensions: ["", ".js", ".ts", ".d.ts"]
     },
