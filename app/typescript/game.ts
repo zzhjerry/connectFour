@@ -9,6 +9,7 @@ class Game {
     connect4: Connect4;
     columnHeight: number[];
     ballsInColumn: Ball[][];
+    gameOver: boolean;
 
     readonly span: number = 50;
     readonly boardAreaMarginLeft: number;
@@ -20,6 +21,7 @@ class Game {
         this.boardAreaMarginTop = 30;
         this.columnHeight = [];
         this.ballsInColumn = [];
+        this.gameOver = false;
         for (let i = 0; i < this.connect4.WIDTH; i++) {
             this.columnHeight[i] = this.connect4.HEIGHT;
             this.ballsInColumn[i] = [];
@@ -27,7 +29,6 @@ class Game {
     }
 
     start(): void {
-        // this.test();
         this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
         this.c = this.canvas.getContext('2d');
         this.drawBackground();
@@ -38,12 +39,23 @@ class Game {
         this.canvas.addEventListener('click', (e) => {
             let col = (e.offsetX - this.boardAreaMarginLeft) / this.span;
             col = Math.floor(col);
-            if (col >= 0 && col < this.connect4.WIDTH
-                && this.connect4.isPlayable(col)) {
+            let row = (e.offsetY - this.boardAreaMarginTop) / this.span;
+            row = Math.floor(row);
+            let isMouseClickInsideBoard: boolean = (
+                col >= 0 && col < this.connect4.WIDTH
+                && row >= 0 && row < this.connect4.HEIGHT);
+
+            if (isMouseClickInsideBoard && this.connect4.isPlayable(col)
+                && !this.gameOver) {
+
                 this.drawDropingBall(col);
                 this.connect4.move(col);
             }
-        })
+        });
+        this.canvas.addEventListener('mousemove', (e) => {
+            let columnHighlightingColor = players[this.connect4.getCurrentPlayerId()].columnHighlightingColor;
+
+        });
     }
 
     drawBackground(): void {
@@ -98,10 +110,10 @@ class Game {
                 this.drawBackground();
                 this.drawExistingBalls();
                 if (this.connect4.isLegalHasWon(this.connect4.getBoard(player))) {
+                    this.gameOver = true;
                     this.message('message', `${player.name} wins`);
                 }
             }
-
         }
         animate();
         this.columnHeight[col]--;

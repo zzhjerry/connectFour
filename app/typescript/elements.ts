@@ -2,8 +2,11 @@ class Player implements Player {
     id: number;
     name: string;
     color: string;
+    columnHighlightingColor: string;
 
-    constructor(id: number, name: string, color: string) {
+    constructor(id: number, name: string,
+        color: string, columnHighlightingColor: string) {
+
         this.id = id;
         this.name = name;
         this.color = color;
@@ -33,8 +36,8 @@ class Ball {
     }
 }
 
-let player1 = new Player(0, 'Red', 'red');
-let player2 = new Player(1, 'Blue', 'blue');
+let player1 = new Player(0, 'Red', 'red', '#ffcccc');
+let player2 = new Player(1, 'Blue', 'blue', '#ccccff');
 export { Player };
 export let players = [player1, player2];
 export { Ball };
