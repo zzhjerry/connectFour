@@ -10,6 +10,6 @@
     "app/typescript/main.ts",
     "app/typescript/game.ts",
     "app/typescript/connect4.ts",
-    "app/typescript/element.ts"
+    "app/typescript/elements.ts"
   ]
 }

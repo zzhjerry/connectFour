@@ -1,4 +1,6 @@
 import Connect4 = require("./connect4");
+import { Ball } from "./elements";
+import { Player } from "./elements";
 
 class Game {
 
@@ -28,10 +30,10 @@ class Game {
         this.c = this.canvas.getContext('2d');
         this.drawBackground();
         this.loop();
-        this.initEvents();
+        this.initEventsListeners();
     }
 
-    initEvents = (): void => {
+    initEventsListeners = (): void => {
         this.canvas.addEventListener('click', (e) => {
             let col = (e.offsetX - this.boardAreaMarginLeft) / this.span;
             col = Math.floor(col);
@@ -79,16 +81,22 @@ class Game {
         let animate = () => {
             this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.drawBackground();
-            this.c.beginPath();
-            this.c.arc(x, y + dy / 2, radius, 0, 2 * Math.PI);
-            this.c.fill();
-            this.c.closePath();
+            this.drawExistingBalls();
+            this.drawNewBall(1, x, y + dy / 2, radius);
             y += dy;
             if (y < distance)
                 requestAnimationFrame(animate);
         }
         animate();
         this.columnHeight[col]--;
+    }
+
+    drawExistingBalls = (player: Player, x: number, y: number, radius: number): void => {
+    }
+
+    drawNewBall = (player: Player, x: number, y: number, radius: number): void => {
+        let ball = new Ball(player, x, y, radius);
+        ball.draw(this.c);
     }
 
     loop() {
