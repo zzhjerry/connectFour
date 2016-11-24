@@ -29,7 +29,7 @@ class Game {
     }
 
     start(): void {
-        this.drawBackground();
+        this.drawGrid();
         this.initEventsListeners();
     }
 
@@ -49,8 +49,7 @@ class Game {
         let connect4 = this.connect4;
         this.canvas.addEventListener('click', (e) => {
             let [row, col, isMouseInsideBoard] = this.getMousePosition(e);
-            if (isMouseInsideBoard && this.connect4.isPlayable(col)
-                && !this.gameOver) {
+            if (isMouseInsideBoard && this.connect4.isPlayable(col) && !this.gameOver) {
 
                 this.drawDropingBall(col);
                 this.connect4.move(col);
@@ -88,7 +87,7 @@ class Game {
         return [row, col, isMouseInsideBoard];
     }
 
-    drawBackground(): void {
+    drawGrid(): void {
         let numHorizentalLines = this.connect4.HEIGHT + 1;
         let numVerticalLines = this.connect4.WIDTH + 1;
         let lengthHorizentalLine = this.connect4.WIDTH * this.span;
@@ -119,7 +118,7 @@ class Game {
 
     drawLastFinalState = (): void => {
         this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawBackground();
+        this.drawGrid();
         this.drawExistingBalls();
     }
 
