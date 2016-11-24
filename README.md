@@ -22,7 +22,7 @@ npm install
 npm run serve
 ```
 
-Another option (use yarn to make package download faster):
+**Another option (use yarn to make package download faster):**
 
 [Install yarn](https://yarnpkg.com/en/docs/install#mac-tab) if you haven't.
 
