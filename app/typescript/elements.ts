@@ -1,4 +1,5 @@
 class Player {
+
     id: number;
     name: string;
     color: string;
@@ -14,6 +15,7 @@ class Player {
 }
 
 class Ball {
+
     x: number;
     y: number;
     radius: number;
@@ -38,6 +40,7 @@ class Ball {
 
 let player1 = new Player(0, 'Red', 'red', 'rgba(255, 204, 204, 0.2)');
 let player2 = new Player(1, 'Blue', 'blue', 'rgba(204, 204, 255, 0.2)');
+
 export { Player };
 export let players = [player1, player2];
 export { Ball };
