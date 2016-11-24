@@ -2,6 +2,8 @@
 
 Built with typescript and webpack.
 
+![Screenshot](./screenshot.png)
+
 ## Installation
 
 ### Prerequisite: `npm`
