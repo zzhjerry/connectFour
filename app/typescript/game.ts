@@ -22,7 +22,18 @@ class Game {
         this.boardHeight = this.span * this.connect4.HEIGHT;
         this.boardWidth = this.span * this.connect4.WIDTH;
         this.boardAreaMarginLeft = 30;
-        this.boardAreaMarginTop = 30;
+        this.boardAreaMarginTop = 10;
+        this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
+        this.c = this.canvas.getContext('2d');
+        this.reset();
+    }
+
+    start(): void {
+        this.drawBackground();
+        this.initEventsListeners();
+    }
+
+    reset(): void {
         this.columnHeight = [];
         this.ballsInColumn = [];
         this.gameOver = false;
@@ -30,13 +41,8 @@ class Game {
             this.columnHeight[i] = this.connect4.HEIGHT;
             this.ballsInColumn[i] = [];
         }
-    }
-
-    start(): void {
-        this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
-        this.c = this.canvas.getContext('2d');
-        this.drawBackground();
-        this.initEventsListeners();
+        this.connect4.reset();
+        this.drawLastFinalState();
     }
 
     initEventsListeners = (): void => {
