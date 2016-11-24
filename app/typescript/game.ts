@@ -166,7 +166,6 @@ class Game {
 
     message(divName: string, mesg: string): void {
         const elt = document.getElementById(divName);
-        let connect4 = new Connect4();
         elt.innerText = mesg;
     }
 }
