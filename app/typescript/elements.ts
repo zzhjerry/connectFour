@@ -5,8 +5,7 @@ class Player {
     color: string;
     columnHighlightingColor: string;
 
-    constructor(id: number, name: string,
-        color: string, columnHighlightingColor: string) {
+    constructor(id: number, name: string, color: string, columnHighlightingColor: string) {
         this.id = id;
         this.name = name;
         this.color = color;
