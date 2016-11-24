@@ -76,7 +76,7 @@ class Game {
     }
 
     drawDropingBall = (col: number): void => {
-        let dy: number = 3;
+        let dy: number = 10;
         let halfSpan: number = this.span / 2;
         let radius = halfSpan - 3;
         let x = this.boardAreaMarginLeft + (2 * col + 1) * halfSpan;
@@ -94,8 +94,11 @@ class Game {
             else {
                 this.ballsInColumn[col].push(
                     new Ball(player, x, distance, radius));
+                this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.drawBackground();
+                this.drawExistingBalls();
                 if (this.connect4.isLegalHasWon(this.connect4.getBoard(player))) {
-                    alert(`${player.name} wins`);
+                    this.message('message', `${player.name} wins`);
                 }
             }
 
@@ -118,27 +121,10 @@ class Game {
         ball.draw(this.c);
     }
 
-    loop() {
-        let [x, y] = [10, 10];
-        let [dx, dy] = [2, 2];
-        let draw = () => {
-            this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.c.beginPath();
-            this.c.arc(x, y, 10, 0, Math.PI * 2);
-            this.c.fillStyle = "#0095DD";
-            this.c.fill();
-            this.c.closePath();
-            x += dx;
-            y += dy;
-            requestAnimationFrame(draw);
-        }
-        // draw();
-    }
-
-    test(): void {
-        const elt = document.getElementById('app');
+    message(divName: string, mesg: string): void {
+        const elt = document.getElementById(divName);
         let connect4 = new Connect4();
-        elt.innerText = connect4.test1().toString();
+        elt.innerText = mesg;
     }
 }
 
