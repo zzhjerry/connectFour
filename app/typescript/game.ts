@@ -8,6 +8,7 @@ class Game {
     c: CanvasRenderingContext2D;
     connect4: Connect4;
     columnHeight: number[];
+    ballsInColumn: Ball[][];
 
     readonly span: number = 50;
     readonly boardAreaMarginLeft: number;
@@ -18,18 +19,18 @@ class Game {
         this.boardAreaMarginLeft = 30;
         this.boardAreaMarginTop = 30;
         this.columnHeight = [];
+        this.ballsInColumn = [];
         for (let i = 0; i < this.connect4.WIDTH; i++) {
             this.columnHeight[i] = this.connect4.HEIGHT;
+            this.ballsInColumn[i] = [];
         }
     }
 
     start(): void {
         // this.test();
-
         this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
         this.c = this.canvas.getContext('2d');
         this.drawBackground();
-        this.loop();
         this.initEventsListeners();
     }
 
@@ -37,8 +38,11 @@ class Game {
         this.canvas.addEventListener('click', (e) => {
             let col = (e.offsetX - this.boardAreaMarginLeft) / this.span;
             col = Math.floor(col);
-            if (col >= 0 && col < this.connect4.WIDTH)
+            if (col >= 0 && col < this.connect4.WIDTH
+                && this.connect4.isPlayable(col)) {
                 this.drawDropingBall(col);
+                this.connect4.move(col);
+            }
         })
     }
 
@@ -78,20 +82,30 @@ class Game {
         let x = this.boardAreaMarginLeft + (2 * col + 1) * halfSpan;
         let y = this.boardAreaMarginTop + halfSpan;
         let distance = this.boardAreaMarginTop + this.columnHeight[col] * this.span - halfSpan;
+        let player = this.connect4.getCurrentPlayer();
         let animate = () => {
             this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.drawBackground();
             this.drawExistingBalls();
-            this.drawNewBall(1, x, y + dy / 2, radius);
+            this.drawNewBall(player, x, y + dy / 2, radius);
             y += dy;
             if (y < distance)
                 requestAnimationFrame(animate);
+            else
+                this.ballsInColumn[col].push(new Ball(player, x, distance, radius));
+
         }
         animate();
         this.columnHeight[col]--;
     }
 
-    drawExistingBalls = (player: Player, x: number, y: number, radius: number): void => {
+    drawExistingBalls = (): void => {
+        for (let index = 0; index < this.connect4.WIDTH; index++) {
+            let balls = this.ballsInColumn[index];
+            for (let ballIndex = 0; ballIndex < balls.length; ballIndex++) {
+                balls[ballIndex].draw(this.c);
+            }
+        }
     }
 
     drawNewBall = (player: Player, x: number, y: number, radius: number): void => {
@@ -114,13 +128,12 @@ class Game {
             requestAnimationFrame(draw);
         }
         // draw();
-        this.drawDropingBall(0);
     }
 
     test(): void {
         const elt = document.getElementById('app');
         let connect4 = new Connect4();
-        elt.innerText = connect4.test().toString();
+        elt.innerText = connect4.test1().toString();
     }
 }
 

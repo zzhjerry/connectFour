@@ -10,9 +10,10 @@ class Connect4 {
     readonly WIDTH: number = 7;
     readonly SIZE: number = this.WIDTH * this.HEIGHT;
     readonly H1: number = this.HEIGHT + 1;
+    readonly SIZE1: number = this.WIDTH * this.H1;
     readonly H2: number = this.HEIGHT + 2;
-    readonly ALL1: Long = Long.UONE.shl(this.SIZE).sub(Long.UONE);
-    readonly COL1: number = (1 << this.HEIGHT) - 1;
+    readonly ALL1: Long = Long.UONE.shl(this.SIZE1).sub(Long.UONE);
+    readonly COL1: number = (1 << this.H1) - 1;
     readonly BOTTOM: Long = this.ALL1.div(Long.fromInt(this.COL1, true));
     readonly TOP: Long = this.BOTTOM.shl(this.HEIGHT);
 
@@ -21,7 +22,7 @@ class Connect4 {
     private moves: number[];
     private npiles: number;
 
-    constructor () {
+    constructor() {
         this.npiles = 0;
         this.color = [];
         this.moves = [];
@@ -38,22 +39,26 @@ class Connect4 {
         }
     }
 
-    positionCode () {
+    getCurrentPlayer = (): number => {
+        return this.npiles & 1;
+    }
+
+    positionCode() {
         return this.color[0].shl(1)
             .add(this.color[1])
             .add(this.BOTTOM);
     }
 
-    private isLegal (newboard: Long): boolean {
+    private isLegal(newboard: Long): boolean {
         return newboard.and(this.TOP).eq(0);
     }
 
-    isPlayable (col: number): boolean {
+    isPlayable(col: number): boolean {
         return this.isLegal(this.color[this.npiles & 1]
-                            .or(Long.UONE.shl(this.height[col])))
+            .or(Long.UONE.shl(this.height[col])))
     }
 
-    hasWon (newboard: Long): boolean {
+    hasWon(newboard: Long): boolean {
         let y: Long = newboard.and(newboard.shr(this.HEIGHT));
         if (y.and(y.shr(2 * this.HEIGHT)).neq(Long.UZERO)) {
             return true;  // check diagnal \
@@ -73,11 +78,11 @@ class Connect4 {
         return (y.and(y.shr(2)).neq(Long.UZERO));  // check vertical |
     }
 
-    isLegalHasWon (newboard: Long): boolean {
+    isLegalHasWon(newboard: Long): boolean {
         return this.isLegal(newboard) && this.hasWon(newboard);
     }
 
-    move (col: number): void {
+    move(col: number): void {
         this.color[this.npiles & 1] = this.color[this.npiles & 1]
             .xor(Long.UONE.shl(this.height[col]));
         this.height[col]++;
@@ -85,12 +90,20 @@ class Connect4 {
         this.npiles++;
     }
 
-    test (): boolean {
+    test(): boolean {
         let board: Long = Long.UONE
             .shl(this.H2).add(Long.UONE)
             .shl(this.H2).add(Long.UONE)
             .shl(this.H2).add(Long.UONE)
         return this.hasWon(board);
+    }
+
+    test1(): number {
+        this.move(0);
+        this.move(0);
+        this.move(1);
+        this.move(1);
+        return this.height[0]
     }
 }
 
