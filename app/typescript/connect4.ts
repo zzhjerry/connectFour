@@ -1,4 +1,5 @@
 import Long = require("long");
+import { Player } from "./elements";
 
 /* References:
  * http://stackoverflow.com/questions/7044670/how-to-determine-game-end-in-tic-tac-toe/7046415#7046415
@@ -39,8 +40,12 @@ class Connect4 {
         }
     }
 
-    getCurrentPlayer = (): number => {
+    getCurrentPlayerId = (): number => {
         return this.npiles & 1;
+    }
+
+    getBoard = (player: Player) => {
+        return this.color[player.id];
     }
 
     positionCode() {

@@ -1,6 +1,6 @@
 import Connect4 = require("./connect4");
-import { Ball } from "./elements";
-import { Player } from "./elements";
+import { Ball, Player } from "./elements";
+import { players } from "./elements";
 
 class Game {
 
@@ -82,7 +82,7 @@ class Game {
         let x = this.boardAreaMarginLeft + (2 * col + 1) * halfSpan;
         let y = this.boardAreaMarginTop + halfSpan;
         let distance = this.boardAreaMarginTop + this.columnHeight[col] * this.span - halfSpan;
-        let player = this.connect4.getCurrentPlayer();
+        let player = players[this.connect4.getCurrentPlayerId()];
         let animate = () => {
             this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.drawBackground();
@@ -91,8 +91,13 @@ class Game {
             y += dy;
             if (y < distance)
                 requestAnimationFrame(animate);
-            else
-                this.ballsInColumn[col].push(new Ball(player, x, distance, radius));
+            else {
+                this.ballsInColumn[col].push(
+                    new Ball(player, x, distance, radius));
+                if (this.connect4.isLegalHasWon(this.connect4.getBoard(player))) {
+                    alert(`${player.name} wins`);
+                }
+            }
 
         }
         animate();

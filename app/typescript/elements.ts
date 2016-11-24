@@ -1,7 +1,14 @@
-enum Player {
-    Red,
-    Blue,
-};
+class Player implements Player {
+    id: number;
+    name: string;
+    color: string;
+
+    constructor(id: number, name: string, color: string) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+    }
+}
 
 class Ball {
     x: number;
@@ -14,16 +21,7 @@ class Ball {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        switch (player) {
-            case Player.Red:
-                this.color = "red";
-                break;
-            case Player.Blue:
-                this.color = "blue";
-                break;
-            default:
-                throw new RangeError(`Player ${player} can only be 0 or 1`);
-        }
+        this.color = player.color;
     }
 
     draw = (context: CanvasRenderingContext2D) => {
@@ -35,5 +33,8 @@ class Ball {
     }
 }
 
+let player1 = new Player(0, 'Red', 'red');
+let player2 = new Player(1, 'Blue', 'blue');
 export { Player };
+export let players = [player1, player2];
 export { Ball };
