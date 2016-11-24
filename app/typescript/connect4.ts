@@ -4,7 +4,7 @@ import { Player } from "./elements";
 /* References:
  * http://stackoverflow.com/questions/7044670/how-to-determine-game-end-in-tic-tac-toe/7046415#7046415
  * https://github.com/qu1j0t3/fhourstones/blob/master/Connect4.java
-*/
+ */
 class Connect4 {
 
     readonly HEIGHT: number = 6;
@@ -48,12 +48,6 @@ class Connect4 {
         return this.color[player.id];
     }
 
-    positionCode() {
-        return this.color[0].shl(1)
-            .add(this.color[1])
-            .add(this.BOTTOM);
-    }
-
     private isLegal(newboard: Long): boolean {
         return newboard.and(this.TOP).eq(0);
     }
@@ -63,7 +57,7 @@ class Connect4 {
             .or(Long.UONE.shl(this.height[col])))
     }
 
-    hasWon(newboard: Long): boolean {
+    private hasWon(newboard: Long): boolean {
         let y: Long = newboard.and(newboard.shr(this.HEIGHT));
         if (y.and(y.shr(2 * this.HEIGHT)).neq(Long.UZERO)) {
             return true;  // check diagnal \
@@ -93,22 +87,6 @@ class Connect4 {
         this.height[col]++;
         this.moves[this.npiles] = col;
         this.npiles++;
-    }
-
-    test(): boolean {
-        let board: Long = Long.UONE
-            .shl(this.H2).add(Long.UONE)
-            .shl(this.H2).add(Long.UONE)
-            .shl(this.H2).add(Long.UONE)
-        return this.hasWon(board);
-    }
-
-    test1(): number {
-        this.move(0);
-        this.move(0);
-        this.move(1);
-        this.move(1);
-        return this.height[0]
     }
 }
 
