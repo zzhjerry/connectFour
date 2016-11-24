@@ -42,9 +42,10 @@ files you need in production.
 
 If you run `yarn run serve`, you are actually running
 `webpack-dev-server`. Then when you make any changes to `index.html`
-or the typescript files and save them, http://localhost:8080 will be
-reloaded to reflect the change. Keep one terminal session running this
-command during development will kill lots of overheads (compile
+or the typescript files and save
+them, [http://localhost:8080](http://localhost:8080) will be reloaded
+to reflect the change. Keep one terminal session running this command
+during development will kill lots of overheads (run command to compile
 typescript, refresh browser etc.).
 
 **2. directory structure**
@@ -64,9 +65,10 @@ app
   will check to resolve source file dependencies for compilation
   purpose.
 - `game.ts` handles the graphical rendering logic for the game. All
-  drawing works are done by using <canvas> API.
+  drawing works are done by using `<canvas>` API.
 - `connect4.ts` implements the core win & lose logic for the game. It
     uses bitboard to record moves and detect whether the balls are
     lined properly.  The idea is borrowed from
     https://github.com/qu1j0t3/fhourstones/blob/master/Game.java
-- `elements.ts` defined `Ball` and `Player`.
+- `elements.ts` abstracted `Ball` and `Player`, which are the most
+  ofen referred objects in lower level codes.
