@@ -1,14 +1,15 @@
 {
-    "compilerOption": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module":"commonjs",
-        "target": "ES5"
-    },
-    "files": [
-        "app/typescript/main.ts",
-        "app/typescript/game.ts",
-        "app/typescript/connect4.ts"
-    ]
+  "compilerOption": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module":"commonjs",
+    "target": "ES5"
+  },
+  "files": [
+    "app/typescript/main.ts",
+    "app/typescript/game.ts",
+    "app/typescript/connect4.ts",
+    "app/typescript/element.ts"
+  ]
 }

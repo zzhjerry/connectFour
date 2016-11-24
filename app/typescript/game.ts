@@ -5,6 +5,7 @@ class Game {
     canvas: HTMLCanvasElement;
     c: CanvasRenderingContext2D;
     connect4: Connect4;
+    columnHeight: number[];
 
     readonly span: number = 50;
     readonly boardAreaMarginLeft: number;
@@ -14,15 +15,29 @@ class Game {
         this.connect4 = new Connect4();
         this.boardAreaMarginLeft = 30;
         this.boardAreaMarginTop = 30;
+        this.columnHeight = [];
+        for (let i = 0; i < this.connect4.WIDTH; i++) {
+            this.columnHeight[i] = this.connect4.HEIGHT;
+        }
     }
 
     start(): void {
-        this.test();
+        // this.test();
 
         this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
         this.c = this.canvas.getContext('2d');
-        // this.drawBackground();
+        this.drawBackground();
         this.loop();
+        this.initEvents();
+    }
+
+    initEvents = (): void => {
+        this.canvas.addEventListener('click', (e) => {
+            let col = (e.offsetX - this.boardAreaMarginLeft) / this.span;
+            col = Math.floor(col);
+            if (col >= 0 && col < this.connect4.WIDTH)
+                this.drawDropingBall(col);
+        })
     }
 
     drawBackground(): void {
@@ -54,8 +69,26 @@ class Game {
         }
     }
 
-    dropBall(col: number): void {
-
+    drawDropingBall = (col: number): void => {
+        let dy: number = 3;
+        let halfSpan: number = this.span / 2;
+        let radius = halfSpan - 3;
+        let x = this.boardAreaMarginLeft + (2 * col + 1) * halfSpan;
+        let y = this.boardAreaMarginTop + halfSpan;
+        let distance = this.boardAreaMarginTop + this.columnHeight[col] * this.span - halfSpan;
+        let animate = () => {
+            this.c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.drawBackground();
+            this.c.beginPath();
+            this.c.arc(x, y + dy / 2, radius, 0, 2 * Math.PI);
+            this.c.fill();
+            this.c.closePath();
+            y += dy;
+            if (y < distance)
+                requestAnimationFrame(animate);
+        }
+        animate();
+        this.columnHeight[col]--;
     }
 
     loop() {
@@ -73,6 +106,7 @@ class Game {
             requestAnimationFrame(draw);
         }
         // draw();
+        this.drawDropingBall(0);
     }
 
     test(): void {
