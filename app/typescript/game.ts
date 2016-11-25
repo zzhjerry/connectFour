@@ -123,7 +123,7 @@ class Game {
     }
 
     drawDropingBall = (col: number): void => {
-        let dy: number = 10;
+        let dy: number = 30;
         let halfSpan: number = this.span / 2;
         let radius = halfSpan - 3;
         let x = this.boardAreaMarginLeft + (2 * col + 1) * halfSpan;
